@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import main.Resolver;
+import util.NumberState;
 
 public class ViewControl {
     private JFrame mainFrame;
@@ -99,9 +100,25 @@ public class ViewControl {
 	    public void mouseReleased(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
 		    if (resolving) {
-
+		    	start.setText("停止");
+		    	NumberState state = new NumberState(numsize);
+		    	for(int i=0;i<textfield.length;i++) {
+		    		for(int j=0;j<textfield[i].length;i++) {
+		    			String text = textfield[i][j].getText();
+		    			text = text == "" ? "0" : text;
+		    			state.setNum(i, j,Integer.parseInt(text));
+		    		}
+		    	}
+		    	NumberState finalstate = Resolver.resolve(state);
+		    	for(int i=0;i<textfield.length;i++) {
+		    		for(int j=0;j<textfield[i].length;j++) {
+		    			textfield[i][j].setText(Integer.toString(finalstate.getNum(i, j)));
+		    		}
+		    	}
+		    	start.setText("計算");
 		    } else {
-
+		    	start.setText("計算");
+		    	Resolver.cancel();
 		    }
 		}
 	    }
@@ -135,25 +152,25 @@ public class ViewControl {
 	Container ct = mainFrame.getContentPane();
 	double width = ct.getWidth();
 	double height = ct.getHeight();
-	double mag = (width - 20) / 1.35 <= (height - 20) ? ((width - 20) / 1.35) / numsize : (height - 20) / numsize;
+	int mag =(int)( (width - 20) / 1.35 <= (height - 20) ? ((width - 20) / 1.35) / numsize : (height - 20) / numsize);
 
 	for (int i = 0; i < textfield.length; i++) {
 	    for (int j = 0; j < textfield[i].length; j++) {
-		textfield[i][j].setBounds((int) (10 + (i * mag)), (int) (10 + (j * mag)), (int) mag, (int) mag);
+		textfield[i][j].setBounds(10 + (i * mag),10 + (j * mag),mag,mag);
 		Font font = textfield[i][j].getFont();
-		Font fonts = new Font(font.getName(), font.getStyle(), (int) (mag * 0.5));
+		Font fonts = new Font(font.getName(), font.getStyle(), (int) (mag * 0.5d));
 		textfield[i][j].setFont(fonts);
 	    }
 	}
 
-	start.setBounds((int) (20 + (textfield.length * mag)), 10, (int) (mag * 3), (int) mag);
+	start.setBounds(20 + (textfield.length * mag), 10, mag * 3,  mag);
 	Font startfont = start.getFont();
-	Font startfonts = new Font(startfont.getName(), startfont.getStyle(), (int) (mag * 0.5));
+	Font startfonts = new Font(startfont.getName(), startfont.getStyle(), (int) (mag * 0.5d));
 	start.setFont(startfonts);
 
-	reset.setBounds((int) (20 + (textfield.length * mag)), (int) (20 + mag), (int) (mag * 3), (int) mag);
+	reset.setBounds(20 + (textfield.length * mag), 20 + mag,mag * 3, mag);
 	Font resetfont = start.getFont();
-	Font resetfonts = new Font(resetfont.getName(), resetfont.getStyle(), (int) (mag * 0.5));
+	Font resetfonts = new Font(resetfont.getName(), resetfont.getStyle(), (int) (mag * 0.5d));
 	reset.setFont(resetfonts);
     }
 
