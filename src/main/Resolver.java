@@ -3,15 +3,20 @@ package main;
 import viewer.ViewControl;
 
 public class Resolver {
-	public static ViewControl vc;
+    public static ViewControl vc;
 
+    public static void main(String[] args) {
+	vc = new ViewControl(9);
 
-	public static void main(String[] args) {
-		vc = new ViewControl(9);
+    }
 
+    public static int[][] resolve(int arrays[][]) {
 
+	return null;
+    }
 
+    public static void cancel() {
 
-	}
+    }
 
 }
